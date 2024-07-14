@@ -1,0 +1,49 @@
+name: CI/CD Deployment
+
+on:
+  push:
+    branches: [ "*" ]
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v4.2.0
+        with:
+          version: 'latest' # default is latest (stable)
+        id: install
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+          
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: 'false'
+        
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REPOSITORY: timeoff-management
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          
+      - name: Update Kubeconfig
+        run: aws eks --region us-west-2 update-kubeconfig --name timeoff-management-cluster
+          
+      - name: Update Helm chart with new image repository and tag
+        run: |
+          sed -i "s/\${ECR_REPOSITORY}/$ECR_REPOSITORY/g" ./evvo_helm/values.yaml
+          sed -i "s/\${CI_COMMIT_SHORT_SHA}/${{ github.sha }}/g" ./evvo_helm/values.yaml
+          helm upgrade --install my-app ./evvo_helm
