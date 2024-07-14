@@ -25,9 +25,11 @@ Build, TAG, and PUSH Image to ECR
 Create EKS Cluster:
 
 Use eksctl to create an EKS cluster. Replace YOUR_CLUSTER_NAME and adjust configurations as needed.
+
 . eksctl create cluster --name YOUR_CLUSTER_NAME --version 1.21 --region your-aws-region --nodegroup-name standard-workers --node-type t3.medium --nodes 3 --nodes-min 1 --nodes-max 4 --managed
 
 Connect EKS cluster tou your local machine:
+
 . aws eks --region <region> update-kubeconfig --name <cluster-name>
 
 Deploy Application to EKS:
@@ -39,6 +41,7 @@ Deploy Application to EKS:
 Incase of helm chart use the following commands:
 
 To create helm chart,
+
 . helm create <chart_name>
 
 To install helm:
