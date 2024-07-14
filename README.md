@@ -43,3 +43,8 @@ To install helm
 helm install <release_name> <chart_name>
 Access the Application
 After successful deployment, access the application using the load balancer URL provided by AWS EKS. Ensure security groups and ingress rules allow access.
+
+![Screenshot (129)](https://github.com/user-attachments/assets/3fe00be1-d75c-4895-a6eb-abd664cdcebb)
+
+![Screenshot (130)](https://github.com/user-attachments/assets/4bb3e64b-d3b9-4a15-a2ff-6792806cc06d)
+
