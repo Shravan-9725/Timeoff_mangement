@@ -3,24 +3,35 @@ Installation and Deployment on AWS EKS
 Prerequisites:
 
 . AWS account with appropriate permissions
+
 . Kubernetes command-line tool (kubectl) configured
+
 . AWS CLI Installed
-. AWS account with ECR(Elastic Container Registry) and EKS (Elastic Kubernetes Engine)
+
+. AWS account with ECR(Elastic Container Registry) and EKS (Elastic Kubernetes Engine). 
+
 . Docker installed locally to build and push Docker images
 
 Deploying TimeOff.Management to AWS EKS:
 
 . Clone the Repository
+
 . git clone https://github.com/timeoff-management/application.git timeoff-management
+
 . cd timeoff-management
 
 Build, TAG, and PUSH Image to ECR
 
 . docker build -t timeoff-management .
+
 (Note: Replace YOUR_ECR_REPO_URI with your actual ECR repository URI.)
+
 . aws ecr get-login-password --region your-aws-region | docker login --username AWS --password-stdin YOUR_ECR_REPO_URI
+
 . docker tag timeoff-management:latest YOUR_ECR_REPO_URI:latest
+
 . docker push YOUR_ECR_REPO_URI:latest
+
 
 Create EKS Cluster:
 
@@ -35,7 +46,9 @@ Connect EKS cluster tou your local machine:
 Deploy Application to EKS:
 
 . Use Kubernetes manifests (deployment.yaml, service.yaml, etc.) adapted for your AWS setup. Ensure to substitute placeholders like YOUR_ECR_REPO_URI with actual values.
+
 . HELM Chart can also be used which will contain all the manifest files.
+
 . kubectl apply -f <manifest_file_name>
 
 Incase of helm chart use the following commands:
