@@ -1,0 +1,7 @@
+At first I tried to run the application in local machine, npm didn't install due to the outdated package.json (dependencies).
+
+Also the code seems to be outdated updating the code to latest version will improve the code quality and application performance.
+
+Planning to set up the infra was the difficult part.
+
+Since I am more familiar with EKS, ECR I chose to deploy application in Elastic Kubernetes Service.
