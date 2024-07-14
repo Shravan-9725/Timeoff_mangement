@@ -5,3 +5,5 @@ Also the code seems to be outdated updating the code to latest version will impr
 Planning to set up the infra was the difficult part.
 
 Since I am more familiar with EKS, ECR I chose to deploy application in Elastic Kubernetes Service.
+
+I have used github actions instead of AWS CI/CD.
